@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -25,6 +26,7 @@ import io.jsonwebtoken.Claims;
  * @author eyaomai
  *
  */
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final AuthenticationManager authenticationManager;
@@ -48,6 +50,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     if (authHeader != null) {
       tokenStr = authHeader.substring(tokenHead.length());
+      log.info("THIS.TOKEN is {}", tokenStr);
+      log.info("THIS.publicKey is {}", publicKey);
+
       if (authHeader != null && authHeader.startsWith(tokenHead)) {
         try {
           claims = JWTUtils.parseJwt(publicKey, tokenStr);
